@@ -40,6 +40,19 @@ const postController = {
       res.status(400).json({ message: error.message });
     }
   },
+  deletePost: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).send("No post with this id.");
+
+      await PostModel.findByIdAndRemove(id);
+
+      res.json({ message: "post deleted successfully." });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  },
 };
 
 module.exports = postController;

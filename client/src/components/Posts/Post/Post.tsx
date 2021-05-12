@@ -10,6 +10,8 @@ import MoreHorizRoundedIcon from "@material-ui/icons/MoreHorizRounded";
 import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { deletePost } from "../../../actions/postsActions";
 
 import useStyles from "./styles";
 
@@ -23,6 +25,8 @@ interface Props {
 
 const Post = ({ post, setCurrentId }: Props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -51,10 +55,10 @@ const Post = ({ post, setCurrentId }: Props) => {
           {post.tags.map((tag: any) => `#${tag}`)}
         </Typography>
       </div>
-      
-        <Typography className={classes.title} variant="h5" gutterBottom>
-          {post.title}
-        </Typography>
+
+      <Typography className={classes.title} variant="h5" gutterBottom>
+        {post.title}
+      </Typography>
       <CardContent>
         <Typography variant="h5" gutterBottom>
           {post.message}
@@ -65,7 +69,11 @@ const Post = ({ post, setCurrentId }: Props) => {
           <ThumbUpAltRoundedIcon fontSize="small" />
           Like
         </Button>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(deletePost(post._id))}
+        >
           <DeleteRoundedIcon fontSize="small" />
           Delete
         </Button>

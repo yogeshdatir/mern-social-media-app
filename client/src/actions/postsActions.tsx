@@ -46,3 +46,12 @@ export const updatePost =
       console.log(error.message);
     }
   };
+
+  export const deletePost = (id: number) => async (dispatch: any) => {
+    try {
+      await api.deletePost(id);
+      dispatch({ type: "DELETE", payload: id });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
