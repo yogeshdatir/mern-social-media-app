@@ -1,0 +1,7 @@
+body {
+    background-image: url("./images/wave1.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
