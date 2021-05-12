@@ -11,7 +11,7 @@ import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
 import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deletePost } from "../../../actions/postsActions";
+import { deletePost, likePost } from "../../../actions/postsActions";
 
 import useStyles from "./styles";
 
@@ -26,7 +26,7 @@ interface Props {
 const Post = ({ post, setCurrentId }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  
+
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -52,7 +52,7 @@ const Post = ({ post, setCurrentId }: Props) => {
       </div>
       <div className={classes.details}>
         <Typography variant="body2" color="textSecondary">
-          {post.tags.map((tag: any) => `#${tag}`)}
+          {post.tags.map((tag: any) => `#${tag} `)}
         </Typography>
       </div>
 
@@ -60,14 +60,18 @@ const Post = ({ post, setCurrentId }: Props) => {
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="body2" color="textSecondary" component="p">
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(likePost(post._id))}
+        >
           <ThumbUpAltRoundedIcon fontSize="small" />
-          Like
+          &nbsp; Like &nbsp; {post.likeCount}
         </Button>
         <Button
           size="small"

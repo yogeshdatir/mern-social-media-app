@@ -53,6 +53,25 @@ const postController = {
       res.status(400).json({ message: error.message });
     }
   },
+  likePost: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      if (!mongoose.Types.ObjectId.isValid(id))
+        return res.status(404).send("No post with this id.");
+
+      const post = await PostModel.findById(id);
+      const updatedPost = await PostModel.findByIdAndUpdate(
+        id,
+        { likeCount: post.likeCount + 1 },
+        { new: true }
+      );
+
+      res.json(updatedPost);
+    } catch (error: any) {
+      console.log(error);
+      res.status(400).json(error);
+    }
+  },
 };
 
 module.exports = postController;
