@@ -8,6 +8,7 @@ const postRoutes = require("./routes/posts")
 
 const app: express.Application = express();
 
+app.use(express.json());
 app.use(cors());
 
 app.use('/posts', postRoutes)
