@@ -5,9 +5,11 @@ import Post from "./Post/Post";
 
 import useStyles from "./styles";
 
-interface Props {}
+interface Props {
+  setCurrentId: (prevState: any) => void;
+}
 
-const Posts = (props: Props) => {
+const Posts = ({ setCurrentId }: Props) => {
   const posts = useSelector((state: any) => state.posts);
   const classes = useStyles();
 
@@ -22,7 +24,7 @@ const Posts = (props: Props) => {
     >
       {posts.map((post: any) => (
         <Grid key={post._id} item xs={12} sm={6}>
-          <Post post={post} />
+          <Post post={post} setCurrentId={setCurrentId} />
         </Grid>
       ))}
     </Grid>

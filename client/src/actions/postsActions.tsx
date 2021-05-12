@@ -26,3 +26,23 @@ export const createPost =
       console.log(error.message);
     }
   };
+
+export const updatePost =
+  (
+    id: number,
+    post: {
+      creator: string;
+      title: string;
+      message: string;
+      selectedFile: string;
+      tags: string;
+    }
+  ) =>
+  async (dispatch: any) => {
+    try {
+      const { data } = await api.updatePost(id, post);
+      dispatch({ type: "UPDATE", payload: data });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };

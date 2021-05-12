@@ -1,14 +1,24 @@
 import { Input, Button, Paper, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
-import {useDispatch} from 'react-redux'
-import { createPost } from "../../actions/postsActions";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost, updatePost } from "../../actions/postsActions";
 
-interface Props {}
+interface Props {
+  currentId: number | null;
+  setCurrentId: (prevState: any) => void;
+}
 
-const Form = (props: Props) => {
+const Form = ({ currentId, setCurrentId }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const post = useSelector((state: any) =>
+    currentId ? state.posts.find((post: any) => post._id === currentId) : null
+  );
+
+  useEffect(() => {
+    if (post) setPostData(post);
+  }, [post]);
 
   const [postData, setPostData] = useState({
     creator: "",
@@ -18,12 +28,26 @@ const Form = (props: Props) => {
     selectedFile: "",
   });
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    dispatch(createPost(postData));
+    if (currentId) {
+      dispatch(updatePost(currentId, postData));
+    } else {
+      dispatch(createPost(postData));
+    }
+    clear();;;
   };
 
-  const clear = () => {};
+  const clear = () => {
+    setCurrentId(null);
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -33,7 +57,9 @@ const Form = (props: Props) => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">Creating a Memory</Typography>
+        <Typography variant="h6">
+          {currentId ? `Editing a Memory` : `Creating a Memory`}
+        </Typography>
         <TextField
           name="creator"
           variant="outlined"

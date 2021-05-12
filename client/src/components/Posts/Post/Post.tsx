@@ -18,9 +18,10 @@ import moment from "moment";
 
 interface Props {
   post: any;
+  setCurrentId: (prevState: any) => void;
 }
 
-const Post = ({ post }: Props) => {
+const Post = ({ post, setCurrentId }: Props) => {
   const classes = useStyles();
   return (
     <Card className={classes.card}>
@@ -37,7 +38,11 @@ const Post = ({ post }: Props) => {
         </Typography>
       </div>
       <div className={classes.overlay2}>
-        <Button style={{ color: "#fff" }} size="small" onClick={() => {}}>
+        <Button
+          style={{ color: "#fff" }}
+          size="small"
+          onClick={() => setCurrentId(post._id)}
+        >
           <MoreHorizRoundedIcon fontSize="default" />
         </Button>
       </div>
@@ -46,8 +51,12 @@ const Post = ({ post }: Props) => {
           {post.tags.map((tag: any) => `#${tag}`)}
         </Typography>
       </div>
-      <CardContent>
+      
         <Typography className={classes.title} variant="h5" gutterBottom>
+          {post.title}
+        </Typography>
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
           {post.message}
         </Typography>
       </CardContent>
