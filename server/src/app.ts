@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Request, Response} from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import cookieParser from "cookie-parser"
@@ -12,6 +12,10 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/posts', postRoutes)
+app.use('/', (req: Request, res: Response) => {
+  res.send('Hello to Memories API')
+})
+
 app.use(cookieParser());
 
 // Config .env to ./config/config.env
