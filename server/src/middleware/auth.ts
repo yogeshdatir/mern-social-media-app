@@ -3,7 +3,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = (<any>req).headers.authorization.split(" ")[1];
+    const token = (<any>req).headers.Authorization.split(" ")[1];
     const isCustomAuth = token.length < 500;
 
     let decodedData: any;
