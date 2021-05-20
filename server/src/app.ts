@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 
 const connectDB = require("./config/db");
 const postRoutes = require("./routes/posts")
+const userRoutes = require("./routes/users");
 
 const app: express.Application = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/posts', postRoutes)
+app.use("/user", userRoutes);
 app.use('/', (req: Request, res: Response) => {
   res.send('Hello to Memories API')
 })
