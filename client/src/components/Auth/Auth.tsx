@@ -18,23 +18,42 @@ import Icon from "./Icon";
 import { useDispatch } from "react-redux";
 import { AUTH } from "../../constants/actionTypes";
 import { useHistory } from "react-router-dom";
+import { signUp, signIn } from "../../actions/auth";
 
 interface Props {}
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = (props: Props) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [isSignUp, setIsSignUp] = useState<boolean>(true);
+  const [isSignUp, setIsSignUp] = useState<boolean>(false);
+  const [formData, setFormData] = useState(initialState);
 
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleShowPassword = () => setShowPassword(!showPassword);
 
-  const handleChange = () => {};
+  const handleChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (isSignUp) {
+      dispatch(signUp(formData, history));
+    } else {
+      dispatch(signIn(formData, history));
+    }
+  };
 
   const googleSuccess = async (res: any) => {
     const result = res?.profileObj;
