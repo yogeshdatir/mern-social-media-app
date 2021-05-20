@@ -14,7 +14,11 @@ const postController = {
   },
   createPost: async (req: Request, res: Response) => {
     const post = req.body;
-    const newPost = new PostModel(post);
+    const newPost = new PostModel({
+      ...post,
+      creator: (<any>req).userId,
+      createdAt: new Date().toISOString(),
+    });
     try {
       await newPost.save();
       res.status(201).json(newPost);

@@ -7,6 +7,7 @@ const postSchema = mongoose.Schema({
     required: true,
   },
   message: { type: String, required: true, trim: true },
+  name: { type: String },
   creator: { type: String, required: true },
   tags: [String],
   selectedFile: { type: String, required: false },

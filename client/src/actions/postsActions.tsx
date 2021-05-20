@@ -13,11 +13,11 @@ export const getPosts = () => async (dispatch: any) => {
 
 export const createPost =
   (post: {
-    creator: string;
     title: string;
     message: string;
     selectedFile: string;
     tags: string;
+    name: string;
   }) =>
   async (dispatch: any) => {
     try {
@@ -32,11 +32,11 @@ export const updatePost =
   (
     id: number,
     post: {
-      creator: string;
       title: string;
       message: string;
       selectedFile: string;
       tags: string;
+      name: string;
     }
   ) =>
   async (dispatch: any) => {
