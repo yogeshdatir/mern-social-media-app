@@ -3,19 +3,19 @@ import express, { Request, Response, NextFunction } from "express";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = (<any>req).headers.authorization.split(" ")[1];
     const isCustomAuth = token.length < 500;
 
-    let decodedData;
+    let decodedData: any;
 
     if (token && isCustomAuth) {
       decodedData = jwt.verify(token, "test");
 
-      req.userId = decodedData?.id;
+      (<any>req).userId = decodedData?.id;
     } else {
       decodedData = jwt.decode(token);
 
-      req.userId = decodedData?.sub;
+      (<any>req).userId = decodedData?.sub;
     }
 
     next();
@@ -23,3 +23,5 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
     res.status(400).json({ message: "Invalid credentials." });
   }
 };
+
+module.exports = auth;

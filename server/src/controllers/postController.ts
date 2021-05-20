@@ -57,7 +57,7 @@ const postController = {
     try {
       const { id } = req.params;
 
-      if (!req.userId) return res.json({ message: "Unauthenticated" });
+      if (!(<any>req).userId) return res.json({ message: "Unauthenticated" });
 
       if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).send("No post with this id.");
@@ -65,14 +65,14 @@ const postController = {
       const post = await PostModel.findById(id);
 
       const index = post.likes.findIndex(
-        (id: string) => id === String(req.userId)
+        (id: string) => id === String((<any>req).userId)
       );
 
       if (index === -1) {
-        post.likes.push(req.userId);
+        post.likes.push((<any>req).userId);
       } else {
         post.likes = post.likes.filter(
-          (id: string) => id === String(req.userId)
+          (id: string) => id === String((<any>req).userId)
         );
       }
 
