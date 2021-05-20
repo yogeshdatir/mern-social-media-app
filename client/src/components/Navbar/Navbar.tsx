@@ -1,6 +1,8 @@
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
+import { LOGOUT } from "../../constants/actionTypes";
 
 import memories from "../../images/memories.svg";
 import useStyles from "./styles";
@@ -10,7 +12,30 @@ interface Props {}
 const Navbar = (props: Props) => {
   const classes = useStyles();
 
-  const user = null;
+  const [user, setUser] = useState<any>(
+    JSON.parse(localStorage.getItem("profile") || "{}")
+  );
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+
+  const logout = () => {
+    dispatch({ type: LOGOUT });
+
+    history.push("/");
+
+    setUser(null);
+  };
+
+  // we need to refresh page for getting user in navbar rendered. To avoid that following useEffect is useful.
+  useEffect(() => {
+    const token = user?.token;
+
+    // JWT ...
+
+    setUser(JSON.parse(localStorage.getItem("profile") || "{}"));
+  }, [location, user?.token]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -32,17 +57,17 @@ const Navbar = (props: Props) => {
         />
       </div>
       <Toolbar className={classes.toolbar}>
-        {user ? (
+        {user?.result ? (
           <div className={classes.profile}>
             <Avatar
               className={classes.purple}
-              // alt={user.result.name}
-              // src={user.result.imageUrl}
+              alt={user.result.name}
+              src={user.result.imageUrl}
             />
             <Typography className={classes.userName} variant="h6">
-              {/* {user.result.name} */}
+              {user.result.name}
             </Typography>
-            <Button variant="contained" color="secondary">
+            <Button variant="contained" color="secondary" onClick={logout}>
               Logout
             </Button>
           </div>
