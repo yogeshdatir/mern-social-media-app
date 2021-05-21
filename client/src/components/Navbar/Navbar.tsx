@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { LOGOUT } from "../../constants/actionTypes";
+import decode from "jwt-decode";
 
 import memories from "../../images/memories.svg";
 import useStyles from "./styles";
@@ -32,7 +33,11 @@ const Navbar = (props: Props) => {
   useEffect(() => {
     const token = user?.token;
 
-    // JWT ...
+    if (token) {
+      const decodedToken: any = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
 
     setUser(JSON.parse(localStorage.getItem("profile") || "{}"));
   }, [location, user?.token]);
