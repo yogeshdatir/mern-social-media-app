@@ -76,7 +76,7 @@ const postController = {
         post.likes.push((<any>req).userId);
       } else {
         post.likes = post.likes.filter(
-          (id: string) => id === String((<any>req).userId)
+          (id: string) => id !== String((<any>req).userId)
         );
       }
 
