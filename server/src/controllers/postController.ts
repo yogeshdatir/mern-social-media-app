@@ -33,6 +33,11 @@ const postController = {
       if (!mongoose.Types.ObjectId.isValid(_id))
         return res.status(404).send("No post with this id.");
 
+      const postToUpdate = await PostModel.findById(_id);
+
+      if (postToUpdate.creator !== (<any>req).userId)
+        return res.status(403).json({ message: "Not authorized" });
+
       const updatedPost = await PostModel.findByIdAndUpdate(
         _id,
         { ...post, _id },
@@ -49,6 +54,11 @@ const postController = {
       const { id } = req.params;
       if (!mongoose.Types.ObjectId.isValid(id))
         return res.status(404).send("No post with this id.");
+
+      const postToDelete = await PostModel.findById(id);
+
+      if (postToDelete.creator !== (<any>req).userId)
+        return res.status(403).json({ message: "Not authorized" });
 
       await PostModel.findByIdAndRemove(id);
 
