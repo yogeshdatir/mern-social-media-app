@@ -18,6 +18,7 @@ import useStyles from "./styles";
 import defaultImage from "../../../images/sunset.svg";
 import moment from "moment";
 import { ThumbUpAltOutlined } from "@material-ui/icons";
+import PopupMenu from "../PopupMenu/PopupMenu";
 
 interface Props {
   post: any;
@@ -74,13 +75,14 @@ const Post = ({ post, setCurrentId }: Props) => {
       {(user?.result?.googleId === post?.creator ||
         user?.result?._id === post?.creator) && (
         <div className={classes.overlay2}>
-          <Button
+          {/* <Button
             style={{ color: "#fff" }}
             size="small"
             onClick={() => setCurrentId(post._id)}
           >
             <MoreHorizRoundedIcon fontSize="default" />
-          </Button>
+          </Button> */}
+          <PopupMenu post={post} setCurrentId={setCurrentId}  />
         </div>
       )}
       <div className={classes.details}>
