@@ -2,27 +2,32 @@ import express, {Request, Response} from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import cookieParser from "cookie-parser"
+import fileUpload from "express-fileupload";
+
+// Config .env to ./config/config.env
+dotenv.config({ path: __dirname + "/config/config.env" });
 
 const connectDB = require("./config/db");
 const postRoutes = require("./routes/posts")
 const userRoutes = require("./routes/users");
+const uploadRoutes = require("./routes/upload");
 
 const app: express.Application = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
 app.use('/posts', postRoutes)
 app.use("/user", userRoutes);
+app.use("/image/", uploadRoutes);
 app.use('/', (req: Request, res: Response) => {
   res.send('Hello to Memories API')
 })
 
 app.use(cookieParser());
-
-// Config .env to ./config/config.env
-dotenv.config({ path: __dirname + "/config/config.env" });
 //  Connect to database
+console.log(process.env.CLOUD_IMAGE_UPLOAD_API_SECRET);
 connectDB();
 
 const PORT = process.env.PORT || 5000

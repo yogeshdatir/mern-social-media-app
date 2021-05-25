@@ -3,18 +3,28 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/postsActions";
+import { toast } from "react-toastify";
 
 interface Props {
   currentId: number | null;
+  currentFileId: number | null;
   setCurrentId: (prevState: any) => void;
+  setCurrentFileId: (prevState: any) => void;
 }
 
-const Form = ({ currentId, setCurrentId }: Props) => {
+const Form = ({
+  currentId,
+  currentFileId,
+  setCurrentId,
+  setCurrentFileId,
+}: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const post = useSelector((state: any) =>
     currentId ? state.posts.find((post: any) => post._id === currentId) : null
   );
+  const [validationError, setValidationError] = useState("");
+
   const user = JSON.parse(localStorage.getItem("profile") || "{}");
 
   useEffect(() => {
@@ -26,10 +36,22 @@ const Form = ({ currentId, setCurrentId }: Props) => {
     message: "",
     tags: "",
     selectedFile: "",
+    selectedFileId: "",
   });
+
+  const fileTypesToAccept = ["image/jpeg", "image/png", "image/jpg"];
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    if (
+      postData.title === "" ||
+      postData.message === "" ||
+      postData.tags === "" ||
+      postData.selectedFile === ""
+    ) {
+      toast.error("Please fill up Title, Message, Tags and Image.");
+      return;
+    }
     if (currentId) {
       dispatch(
         updatePost(currentId, { ...postData, name: user?.result?.name })
@@ -37,16 +59,18 @@ const Form = ({ currentId, setCurrentId }: Props) => {
     } else {
       dispatch(createPost({ ...postData, name: user?.result?.name }));
     }
-    clear();;;
+    clear();
   };
 
   const clear = () => {
     setCurrentId(null);
+    setCurrentFileId(null);
     setPostData({
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
+      selectedFileId: "",
     });
   };
 
@@ -80,6 +104,7 @@ const Form = ({ currentId, setCurrentId }: Props) => {
           onChange={(e: any) =>
             setPostData({ ...postData, title: e.target.value })
           }
+          required
         />
         <TextField
           name="message"
@@ -90,6 +115,7 @@ const Form = ({ currentId, setCurrentId }: Props) => {
           onChange={(e: any) =>
             setPostData({ ...postData, message: e.target.value })
           }
+          required
         />
         <TextField
           name="tags"
@@ -100,9 +126,35 @@ const Form = ({ currentId, setCurrentId }: Props) => {
           onChange={(e: any) =>
             setPostData({ ...postData, tags: e.target.value.split(",") })
           }
+          required
         />
         <div className={classes.fileInput}>
-          <Input type="file" />
+          <Input
+            name="selectedFile"
+            type="file"
+            onChange={(e: any) => {
+              if (
+                e.target.files[0] &&
+                !fileTypesToAccept.includes(e.target.files[0].type)
+              ) {
+                setValidationError(
+                  "The selected file could not be uploaded. Allowed image extensions are jpeg, jpg, and png."
+                );
+                return;
+              }
+              return setPostData({
+                ...postData,
+                selectedFile: e.target.files[0],
+                selectedFileId: currentFileId ? `${currentFileId}` : "",
+              });
+            }}
+            required
+          />
+          {validationError && (
+            <Typography className={classes.errorText}>
+              {validationError}
+            </Typography>
+          )}
         </div>
         <Button
           className={classes.buttonSubmit}

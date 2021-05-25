@@ -13,6 +13,10 @@ API.interceptors.request.use((req: any) => {
 
 export const fetchPosts = () => API.get("/posts");
 export const createPost = (newPost: any) => API.post("/posts", newPost);
+export const uploadPostImage = (image: any) =>
+  API.post("/image/uploadImage", image);
+export const deletePostImage = (fileId: string) =>
+  API.post("/image/deleteImage", { fileId });
 export const updatePost = (id: number, updatedPost: any) =>
   API.patch(`/posts/${id}`, updatedPost);
 export const deletePost = (id: number) => API.delete(`/posts/${id}`);

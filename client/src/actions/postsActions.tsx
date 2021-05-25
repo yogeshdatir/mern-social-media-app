@@ -15,13 +15,20 @@ export const createPost =
   (post: {
     title: string;
     message: string;
-    selectedFile: string;
+    selectedFile: any;
     tags: string;
     name: string;
   }) =>
   async (dispatch: any) => {
     try {
-      const { data } = await api.createPost(post);
+      let formData = new FormData();
+      formData.append("file", post.selectedFile);
+      const { data: dataFromImageUpload } = await api.uploadPostImage(formData);
+      const { data } = await api.createPost({
+        ...post,
+        selectedFile: dataFromImageUpload.result.url,
+        selectedFileId: dataFromImageUpload.result.fileId,
+      });
       dispatch({ type: CREATE, payload: data });
     } catch (error) {
       console.log(error.message);
@@ -34,34 +41,46 @@ export const updatePost =
     post: {
       title: string;
       message: string;
-      selectedFile: string;
+      selectedFile: any;
+      selectedFileId: string;
       tags: string;
       name: string;
     }
   ) =>
   async (dispatch: any) => {
     try {
-      const { data } = await api.updatePost(id, post);
+      let formData = new FormData();
+      formData.append("file", post.selectedFile);
+      const { data: dataFromImageUpload } = await api.uploadPostImage(formData);
+      const { data } = await api.updatePost(id, {
+        ...post,
+        selectedFile: dataFromImageUpload.result.url,
+        selectedFileId: dataFromImageUpload.result.fileId,
+      });
+
+      await api.deletePostImage(post.selectedFileId);
       dispatch({ type: UPDATE, payload: data });
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  export const deletePost = (id: number) => async (dispatch: any) => {
+export const deletePost =
+  (id: number, fileId: string) => async (dispatch: any) => {
     try {
       await api.deletePost(id);
+      await api.deletePostImage(fileId);
       dispatch({ type: DELETE, payload: id });
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  export const likePost = (id: number) => async (dispatch: any) => {
-    try {
-      const { data } = await api.likePost(id);
-      dispatch({ type: UPDATE, payload: data });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+export const likePost = (id: number) => async (dispatch: any) => {
+  try {
+    const { data } = await api.likePost(id);
+    dispatch({ type: UPDATE, payload: data });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

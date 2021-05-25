@@ -22,9 +22,10 @@ import { ThumbUpAltOutlined } from "@material-ui/icons";
 interface Props {
   post: any;
   setCurrentId: (prevState: any) => void;
+  setCurrentFileId: (prevState: any) => void;
 }
 
-const Post = ({ post, setCurrentId }: Props) => {
+const Post = ({ post, setCurrentId, setCurrentFileId }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile") || "{}");
@@ -62,7 +63,10 @@ const Post = ({ post, setCurrentId }: Props) => {
       <CardMedia
         className={classes.media}
         // image={post.selectedFile}
-        image={defaultImage}
+        image={
+          post.selectedFile ||
+          "https://ik.imagekit.io/geyomtt532/memories/Nature__zUO2ICWKd.jpg"
+        }
         title={post.title}
       />
       <div className={classes.overlay}>
@@ -77,7 +81,10 @@ const Post = ({ post, setCurrentId }: Props) => {
           <Button
             style={{ color: "#fff" }}
             size="small"
-            onClick={() => setCurrentId(post._id)}
+            onClick={() => {
+              setCurrentId(post._id);
+              setCurrentFileId(post.selectedFileId);
+            }}
           >
             <MoreHorizRoundedIcon fontSize="default" />
           </Button>
@@ -111,7 +118,7 @@ const Post = ({ post, setCurrentId }: Props) => {
           <Button
             size="small"
             color="primary"
-            onClick={() => dispatch(deletePost(post._id))}
+            onClick={() => dispatch(deletePost(post._id, post.selectedFileId))}
           >
             <DeleteRoundedIcon fontSize="small" />
             Delete
