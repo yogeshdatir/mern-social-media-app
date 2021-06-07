@@ -4,9 +4,13 @@ import Navbar from "./components/Navbar/Navbar";
 import Auth from "./components/Auth/Auth";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import PostDetails from "./components/PostDetails/PostDetails";
+import { useState } from "react";
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("profile") || "{}");
+
+  const [user] = useState<any>(
+    JSON.parse(localStorage.getItem("profile") || "{}")
+  );
 
   return (
     <BrowserRouter>
@@ -20,7 +24,9 @@ function App() {
           <Route
             path="/auth"
             exact
-            component={() => (user === {} ? <Auth /> : <Redirect to="/posts" />)}
+            component={() =>
+              !user.result ? <Auth /> : <Redirect to="/posts" />
+            }
           />
         </Switch>
       </Container>
