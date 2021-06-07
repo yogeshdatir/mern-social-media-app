@@ -1,13 +1,30 @@
 import mongoose from "mongoose";
 import express, { Request, Response } from "express";
+import { nodeModuleNameResolver } from "typescript";
 
 const PostModel = require("../models/postModel");
 
 const postController = {
   getPosts: async (req: Request, res: Response) => {
+    const { page } = req.query;
+
     try {
-      const posts = await PostModel.find();
-      res.status(200).json(posts);
+      const LIMIT = 8;
+      const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+      const total = await PostModel.countDocuments({});
+
+      const posts = await PostModel.find()
+        .sort({ _id: -1 })
+        .limit(LIMIT)
+        .skip(startIndex);
+
+      res
+        .status(200)
+        .json({
+          data: posts,
+          currentPage: Number(page),
+          numberOfPages: Math.ceil(total / LIMIT),
+        });
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }

@@ -11,10 +11,10 @@ interface Props {
 }
 
 const Posts = ({ setCurrentId, setCurrentFileId }: Props) => {
-  const posts = useSelector((state: any) => state.posts);
+  const {posts} = useSelector((state: any) => state.posts);
   const classes = useStyles();
 
-  return !posts.length ? (
+  return !posts?.length ? (
     <CircularProgress />
   ) : (
     <Grid
@@ -24,7 +24,7 @@ const Posts = ({ setCurrentId, setCurrentFileId }: Props) => {
       spacing={3}
     >
       {posts.map((post: any) => (
-        <Grid key={post._id} item xs={12} sm={6}>
+        <Grid key={post._id} item xs={12} sm={12} md={6} lg={3}>
           <Post
             post={post}
             setCurrentId={setCurrentId}
