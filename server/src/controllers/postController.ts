@@ -12,6 +12,21 @@ const postController = {
       res.status(400).json({ message: error.message });
     }
   },
+  getPostsBySearch: async (req: Request, res: Response) => {
+    const { searchQuery, tags } = req.query;
+
+    try {
+      const title = new RegExp(<any>searchQuery, "i");
+
+      const posts = await PostModel.find({
+        $or: [{ title }, { tags: { $in: (<any>tags).split(",") } }],
+      });
+
+      res.status(200).json({ data: posts });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  },
   createPost: async (req: Request, res: Response) => {
     const post = req.body;
     const newPost = new PostModel({

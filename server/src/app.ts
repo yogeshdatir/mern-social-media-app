@@ -27,7 +27,6 @@ app.use('/', (req: Request, res: Response) => {
 
 app.use(cookieParser());
 //  Connect to database
-console.log(process.env.CLOUD_IMAGE_UPLOAD_API_SECRET);
 connectDB();
 
 const PORT = process.env.PORT || 5000
