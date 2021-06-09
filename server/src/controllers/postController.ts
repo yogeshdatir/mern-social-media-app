@@ -5,6 +5,18 @@ import { nodeModuleNameResolver } from "typescript";
 const PostModel = require("../models/postModel");
 
 const postController = {
+  getPost: async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+      const post = await PostModel.findById(id)
+
+      res.status(200).json(post
+      );
+    } catch (error: any) {
+      res.status(404).json({ message: error.message });
+    }
+  },
   getPosts: async (req: Request, res: Response) => {
     const { page } = req.query;
 
@@ -18,13 +30,11 @@ const postController = {
         .limit(LIMIT)
         .skip(startIndex);
 
-      res
-        .status(200)
-        .json({
-          data: posts,
-          currentPage: Number(page),
-          numberOfPages: Math.ceil(total / LIMIT),
-        });
+      res.status(200).json({
+        data: posts,
+        currentPage: Number(page),
+        numberOfPages: Math.ceil(total / LIMIT),
+      });
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
