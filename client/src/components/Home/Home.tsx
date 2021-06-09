@@ -1,4 +1,12 @@
-import { Grow, Container, Grid, AppBar, TextField, Button, Paper } from "@material-ui/core";
+import {
+  Grow,
+  Container,
+  Grid,
+  AppBar,
+  TextField,
+  Button,
+  Paper,
+} from "@material-ui/core";
 import ChipInput from "material-ui-chip-input";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -24,17 +32,19 @@ const Home = (props: Props) => {
   const query = useQuery();
   const history = useHistory();
   const page = query.get("page") || 1;
-  // const searchQuery = query.get("searchQuery");
+  const searchQuery = query.get("searchQuery");
 
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState<any>([]);
 
   const searchPost = () => {
-    if(search.trim() || tags) {
-      dispatch(getPostsBySearch({search, tags: tags.join(',')}));
-      history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`)
+    if (search.trim() || tags) {
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
+      history.push(
+        `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+      );
     } else {
-      history.push('/')
+      history.push("/");
     }
   };
 
@@ -46,7 +56,7 @@ const Home = (props: Props) => {
 
   const handleAdd = (tag: any) => setTags([...tags, tag]);
 
-  const handleDelete = (tagToDelete : any) =>
+  const handleDelete = (tagToDelete: any) =>
     setTags(tags.filter((tag: any) => tag !== tagToDelete));
 
   return (
@@ -88,7 +98,9 @@ const Home = (props: Props) => {
                 label="Search Tags"
                 variant="outlined"
               />
-              <Button onClick={searchPost} variant="contained" color="primary" >Search</Button>
+              <Button onClick={searchPost} variant="contained" color="primary">
+                Search
+              </Button>
             </AppBar>
             <Form
               currentId={currentId}
@@ -96,9 +108,11 @@ const Home = (props: Props) => {
               setCurrentFileId={setCurrentFileId}
               currentFileId={currentFileId}
             />
-            <Paper className={classes.pagination} elevation={6}>
-              <Pagination page={page} />
-            </Paper>
+            {!searchQuery && !tags.length && (
+              <Paper className={classes.pagination} elevation={6}>
+                <Pagination page={page} />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>

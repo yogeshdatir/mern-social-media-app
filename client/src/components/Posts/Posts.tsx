@@ -11,10 +11,12 @@ interface Props {
 }
 
 const Posts = ({ setCurrentId, setCurrentFileId }: Props) => {
-  const {posts} = useSelector((state: any) => state.posts);
+  const {posts, isLoading} = useSelector((state: any) => state.posts);
   const classes = useStyles();
 
-  return !posts?.length ? (
+  if (!posts.length && !isLoading) return <>No posts</>;
+
+  return isLoading ? (
     <CircularProgress />
   ) : (
     <Grid

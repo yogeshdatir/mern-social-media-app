@@ -5,13 +5,17 @@ import {
   DELETE,
   FETCH_ALL,
   FETCH_BY_SEARCH,
+  START_LOADING,
+  END_LOADING,
 } from "../constants/actionTypes";
 
 // Action Creators
 export const getPosts = (page: any) => async (dispatch: any) => {
   try {
+    dispatch({ type: START_LOADING });
     const { data } = await api.fetchPosts(page);
     dispatch({ type: FETCH_ALL, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error.message);
   }
@@ -19,11 +23,12 @@ export const getPosts = (page: any) => async (dispatch: any) => {
 
 export const getPostsBySearch = (searchQuery: any) => async (dispatch: any) => {
   try {
+    dispatch({ type: START_LOADING });
     const {
       data: { data },
     } = await api.fetchPostsBySearch(searchQuery);
-    console.log(data);
     dispatch({ type: FETCH_BY_SEARCH, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error.message);
   }
@@ -39,6 +44,7 @@ export const createPost =
   }) =>
   async (dispatch: any) => {
     try {
+      dispatch({ type: START_LOADING });
       let formData = new FormData();
       formData.append("file", post.selectedFile);
       const { data: dataFromImageUpload } = await api.uploadPostImage(formData);
@@ -48,6 +54,7 @@ export const createPost =
         selectedFileId: dataFromImageUpload.result.fileId,
       });
       dispatch({ type: CREATE, payload: data });
+      dispatch({ type: END_LOADING });
     } catch (error) {
       console.log(error.message);
     }
