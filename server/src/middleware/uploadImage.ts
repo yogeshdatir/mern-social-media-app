@@ -7,12 +7,12 @@ module.exports = async function (
 ) {
   try {
     if (!(<any>req).files || Object.keys((<any>req).files).length === 0)
-      return res.status(400).json({ msg: "No files were uploaded." });
+      return res.status(400).json({ msg: "No file was selected." });
 
     const file: any = (<any>req).files.file;
 
     if (file.size > 1024 * 1024 * 5) {
-      return res.status(400).json({ msg: "Size too large." });
+      return res.status(400).json({ msg: "File size is more than 5mb." });
     }
 
     if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {

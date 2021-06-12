@@ -98,7 +98,11 @@ const Post = ({ post, setCurrentId, setCurrentFileId }: Props) => {
             >
               <MoreHorizRoundedIcon fontSize="default" />
             </Button> */}
-            <PopupMenu post={post} setCurrentId={setCurrentId} />
+            <PopupMenu
+              post={post}
+              setCurrentId={setCurrentId}
+              setCurrentFileId={setCurrentFileId}
+            />
           </div>
         )}
         <div className={classes.details}>

@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 interface Props {
   post: any;
   setCurrentId: (prevState: any) => void;
+  setCurrentFileId: (prevState: any) => void;
 }
 
 const StyledMenuItem = withStyles((theme) => ({
@@ -24,14 +25,16 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-const PopupMenu = ({ post, setCurrentId }: Props) => {
+const PopupMenu = ({ post, setCurrentId, setCurrentFileId }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (e: any) => {
+    e.stopPropagation();
     setAnchorEl(null);
   };
 
@@ -64,14 +67,15 @@ const PopupMenu = ({ post, setCurrentId }: Props) => {
         }}
       >
         <StyledMenuItem
-          onClick={() => {
-            handleClose();
+          onClick={(e: any) => {
+            handleClose(e);
             setCurrentId(post._id);
+            setCurrentFileId(post.selectedFileId);
           }}
         >
           Edit
         </StyledMenuItem>
-        {/* <StyledMenuItem onClick={handleClose}>My account</StyledMenuItem> */}
+        <StyledMenuItem onClick={handleClose}>My account</StyledMenuItem>
       </Menu>
     </div>
   );

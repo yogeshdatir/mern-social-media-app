@@ -55,7 +55,7 @@ export const createPost =
       tags: string;
       name: string;
     },
-    history : any
+    history: any
   ) =>
   async (dispatch: any) => {
     try {
@@ -94,6 +94,14 @@ export const updatePost =
     try {
       let formData = new FormData();
       formData.append("file", post.selectedFile);
+      if (typeof post.selectedFile === "string") {
+        const { data } = await api.updatePost(id, {
+          ...post,
+        });
+        dispatch({ type: UPDATE, payload: data });
+        return;
+      }
+
       const { data: dataFromImageUpload } = await api.uploadPostImage(formData);
       const { data } = await api.updatePost(id, {
         ...post,
