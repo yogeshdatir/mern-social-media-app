@@ -75,7 +75,6 @@ const PopupMenu = ({ post, setCurrentId, setCurrentFileId }: Props) => {
         >
           Edit
         </StyledMenuItem>
-        <StyledMenuItem onClick={handleClose}>My account</StyledMenuItem>
       </Menu>
     </div>
   );
