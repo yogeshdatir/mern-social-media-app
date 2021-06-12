@@ -1,19 +1,47 @@
-import { CREATE, UPDATE, DELETE, FETCH_ALL } from "../constants/actionTypes";
+import {
+  CREATE,
+  UPDATE,
+  DELETE,
+  FETCH_ALL,
+  FETCH_BY_SEARCH,
+  START_LOADING,
+  END_LOADING,
+  FETCH_POST,
+} from "../constants/actionTypes";
 
-const posts = (posts = [], action: any) => {
+const posts = (state = { isLoading: true, posts: [] }, action: any) => {
   switch (action.type) {
+    case START_LOADING:
+      return { ...state, isLoading: true };
+    case END_LOADING:
+      return { ...state, isLoading: false };
+    case FETCH_POST:
+      return { ...state, post: action.payload };
     case FETCH_ALL:
-      return action.payload;
+      return {
+        ...state,
+        posts: action.payload.data,
+        currentPage: action.payload.currentPage,
+        numberOfPages: action.payload.numberOfPages,
+      };
+    case FETCH_BY_SEARCH:
+      return { ...state, posts: action.payload };
     case CREATE:
-      return [...posts, action.payload];
+      return { ...state, posts: [...state.posts, action.payload] };
     case UPDATE:
-      return posts.map((post: any) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      return {
+        ...state,
+        posts: state.posts.map((post: any) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
     case DELETE:
-      return posts.filter((post: any) => post._id !== action.payload);
+      return {
+        ...state,
+        posts: state.posts.filter((post: any) => post._id !== action.payload),
+      };
     default:
-      return posts;
+      return state;
   }
 };
 

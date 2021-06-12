@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import App from "./App";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Provider } from "react-redux";
 import { applyMiddleware, compose, createStore } from "redux";
@@ -15,6 +17,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
+      <ToastContainer />
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
