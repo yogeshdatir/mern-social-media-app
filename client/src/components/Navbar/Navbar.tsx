@@ -63,15 +63,17 @@ const Navbar = (props: Props) => {
       </div>
       <Toolbar className={classes.toolbar}>
         {user?.result ? (
-          <div className={classes.profile}>
-            <Avatar
-              className={classes.purple}
-              alt={user.result.name}
-              src={user.result.imageUrl}
-            />
-            <Typography className={classes.userName} variant="h6">
-              {user.result.name}
-            </Typography>
+          <div className={classes.profileContainer}>
+            <div className={classes.profile}>
+              <Avatar
+                className={classes.purple}
+                alt={user.result.name}
+                src={user.result.imageUrl}
+              />
+              <Typography className={classes.userName} variant="h6">
+                {user.result.name}
+              </Typography>
+            </div>
             <Button variant="contained" color="secondary" onClick={logout}>
               Logout
             </Button>

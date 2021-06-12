@@ -4,6 +4,7 @@ import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/postsActions";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   currentId: number | null;
@@ -21,11 +22,13 @@ const Form = ({
   const classes = useStyles();
   const dispatch = useDispatch();
   const post = useSelector((state: any) =>
-    currentId ? state.posts.find((post: any) => post._id === currentId) : null
+    currentId ? state.posts.posts.find((post: any) => post._id === currentId) : null
   );
   const [validationError, setValidationError] = useState("");
 
   const user = JSON.parse(localStorage.getItem("profile") || "{}");
+
+  const history = useHistory()
 
   useEffect(() => {
     if (post) setPostData(post);
@@ -57,7 +60,7 @@ const Form = ({
         updatePost(currentId, { ...postData, name: user?.result?.name })
       );
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }, history));
     }
     clear();
   };

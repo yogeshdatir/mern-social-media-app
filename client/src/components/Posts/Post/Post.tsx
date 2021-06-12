@@ -89,7 +89,8 @@ const Post = ({ post, setCurrentId, setCurrentFileId }: Props) => {
             <Button
               style={{ color: "#fff" }}
               size="small"
-              onClick={() => {
+              onClick={(e: any) => {
+                e.stopPropagation();
                 setCurrentId(post._id);
                 setCurrentFileId(post.selectedFileId);
               }}

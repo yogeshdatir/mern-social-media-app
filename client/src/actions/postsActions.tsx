@@ -47,13 +47,16 @@ export const getPostsBySearch = (searchQuery: any) => async (dispatch: any) => {
 };
 
 export const createPost =
-  (post: {
-    title: string;
-    message: string;
-    selectedFile: any;
-    tags: string;
-    name: string;
-  }) =>
+  (
+    post: {
+      title: string;
+      message: string;
+      selectedFile: any;
+      tags: string;
+      name: string;
+    },
+    history : any
+  ) =>
   async (dispatch: any) => {
     try {
       dispatch({ type: START_LOADING });
@@ -65,8 +68,11 @@ export const createPost =
         selectedFile: dataFromImageUpload.result.url,
         selectedFileId: dataFromImageUpload.result.fileId,
       });
+
       dispatch({ type: CREATE, payload: data });
       dispatch({ type: END_LOADING });
+
+      history.push(`/posts/${data._id}`);
     } catch (error) {
       console.log(error.message);
     }
