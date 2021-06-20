@@ -8,7 +8,7 @@ import fileUpload from "express-fileupload";
 dotenv.config({ path: __dirname + "/config/config.env" });
 
 const connectDB = require("./config/db");
-const chartPractiseRoutes = require("./routes/chartPractise")
+const chartPracticeRoutes = require("./routes/chartPractice")
 const postRoutes = require("./routes/posts")
 const userRoutes = require("./routes/users");
 const uploadRoutes = require("./routes/upload");
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cors());
 app.use(fileUpload());
 
-app.use('/chartData', chartPractiseRoutes)
+app.use('/chartData', chartPracticeRoutes)
 app.use('/posts', postRoutes)
 app.use("/user", userRoutes);
 app.use("/image/", uploadRoutes);
