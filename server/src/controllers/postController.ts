@@ -9,10 +9,9 @@ const postController = {
     const { id } = req.params;
 
     try {
-      const post = await PostModel.findById(id)
+      const post = await PostModel.findById(id);
 
-      res.status(200).json(post
-      );
+      res.status(200).json(post);
     } catch (error: any) {
       res.status(404).json({ message: error.message });
     }
@@ -43,6 +42,12 @@ const postController = {
     const { searchQuery, tags } = req.query;
 
     try {
+      if (searchQuery === "none" && tags === "") {
+        const posts = await PostModel.find();
+        return res.status(200).json({
+          data: posts,
+        });
+      }
       const title = new RegExp(<any>searchQuery, "i");
 
       const posts = await PostModel.find({
