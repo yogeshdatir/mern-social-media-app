@@ -1,10 +1,21 @@
-import { Input, Button, Paper, TextField, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  makeStyles,
+  Paper,
+  TextField,
+  Tooltip,
+  TooltipProps,
+  Typography,
+} from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
 import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/postsActions";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 interface Props {
   currentId: number | null;
@@ -21,14 +32,18 @@ const Form = ({
 }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const uploadRef: any = useRef(null);
   const post = useSelector((state: any) =>
-    currentId ? state.posts.posts.find((post: any) => post._id === currentId) : null
+    currentId
+      ? state.posts.posts.find((post: any) => post._id === currentId)
+      : null
   );
   const [validationError, setValidationError] = useState("");
+  const [selectedFileName, setSelectedFileName] = useState("");
 
   const user = JSON.parse(localStorage.getItem("profile") || "{}");
 
-  const history = useHistory()
+  const history = useHistory();
 
   useEffect(() => {
     if (post) setPostData(post);
@@ -68,6 +83,9 @@ const Form = ({
   const clear = () => {
     setCurrentId(null);
     setCurrentFileId(null);
+    setValidationError("");
+    uploadRef.current.value = "";
+    setSelectedFileName("");
     setPostData({
       title: "",
       message: "",
@@ -85,6 +103,22 @@ const Form = ({
         </Typography>
       </Paper>
     );
+  }
+
+  const useStylesBootstrap = makeStyles((theme) => ({
+    arrow: {
+      color: theme.palette.common.black,
+    },
+    tooltip: {
+      backgroundColor: theme.palette.common.black,
+      marginBottom: "-1px",
+    },
+  }));
+
+  function BootstrapTooltip(props: JSX.IntrinsicAttributes & TooltipProps) {
+    const classes = useStylesBootstrap();
+
+    return <Tooltip arrow classes={classes} {...props} />;
   }
 
   return (
@@ -132,9 +166,11 @@ const Form = ({
           required
         />
         <div className={classes.fileInput}>
-          <Input
+          <input
             name="selectedFile"
             type="file"
+            hidden
+            ref={uploadRef}
             onChange={(e: any) => {
               if (
                 e.target.files[0] &&
@@ -145,6 +181,7 @@ const Form = ({
                 );
                 return;
               }
+              setSelectedFileName(e.target.files[0].name);
               return setPostData({
                 ...postData,
                 selectedFile: e.target.files[0],
@@ -153,6 +190,54 @@ const Form = ({
             }}
             required
           />
+          <Button
+            variant="contained"
+            color="default"
+            startIcon={<CloudUploadIcon />}
+            onClick={(e: any) => {
+              setValidationError("");
+              uploadRef.current.click();
+            }}
+          >
+            Upload
+          </Button>
+          {selectedFileName && (
+            <Box style={{ display: "flex", marginTop: "8px" }}>
+              <BootstrapTooltip
+                title={selectedFileName}
+                placement="top"
+                aria-label="add"
+              >
+                <Typography
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "90%",
+                  }}
+                >
+                  {selectedFileName}
+                </Typography>
+              </BootstrapTooltip>
+              <CancelIcon
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setCurrentId(null);
+                  setCurrentFileId(null);
+                  setValidationError("");
+                  uploadRef.current.value = "";
+                  setSelectedFileName("");
+                  setPostData({
+                    ...postData,
+                    selectedFile: "",
+                    selectedFileId: "",
+                  });
+                }}
+              />
+            </Box>
+          )}
           {validationError && (
             <Typography className={classes.errorText}>
               {validationError}

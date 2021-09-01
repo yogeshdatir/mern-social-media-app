@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export default makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
-      margin: theme.spacing(1),
+      margin: theme.spacing(1, 0),
     },
   },
   paper: {
@@ -15,11 +15,11 @@ export default makeStyles((theme) => ({
     justifyContent: "center",
   },
   fileInput: {
-    width: "97%",
-    margin: "10px 0",
+    width: "100%",
+    margin: theme.spacing(1, 0),
   },
   buttonSubmit: {
-    marginBottom: 10,
+    marginBottom: theme.spacing(1),
   },
   errorText: {
     color: "#FF0000",
