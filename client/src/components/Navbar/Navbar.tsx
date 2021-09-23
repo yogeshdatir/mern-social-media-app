@@ -52,7 +52,7 @@ const Navbar = (props: Props) => {
           variant="h2"
           align="center"
         >
-          Memories
+          InstaMilligram
         </Typography>
         <img
           className={classes.image}
