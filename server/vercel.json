@@ -1,6 +1,8 @@
 {
   "version": 2,
   "outputDirectory": "dist",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
   "builds": [
     {
       "src": "dist/*.js",
