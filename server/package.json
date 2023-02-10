@@ -7,6 +7,9 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc -p ."
   },
+  "engines": {
+    "node": "14.x"
+  },
   "license": "MIT",
   "author": "Yogesh Datir <yogdat@gmail.com>",
   "keywords": [
