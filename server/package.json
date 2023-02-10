@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "start": "NODE_ENV=production node dist/index.js",
+    "dev": "nodemon src/index.ts",
     "build": "tsc -p ."
   },
   "license": "MIT",
@@ -31,7 +31,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "imagekit": "^3.1.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.12.8",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
