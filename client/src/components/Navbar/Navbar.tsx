@@ -1,12 +1,12 @@
-import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { NavLink, useHistory, useLocation } from "react-router-dom";
-import { LOGOUT } from "../../constants/actionTypes";
-import decode from "jwt-decode";
+import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { LOGOUT } from '../../constants/actionTypes';
+import decode from 'jwt-decode';
 
-import memories from "../../images/memories.svg";
-import useStyles from "./styles";
+import memories from '../../images/memories.svg';
+import useStyles from './styles';
 
 interface Props {}
 
@@ -14,20 +14,18 @@ const Navbar = (props: Props) => {
   const classes = useStyles();
 
   const [user, setUser] = useState<any>(
-    JSON.parse(localStorage.getItem("profile") || "{}")
+    JSON.parse(localStorage.getItem('profile') || '{}')
   );
 
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
 
-  const logout = () => {
+  const logout = useCallback(() => {
     dispatch({ type: LOGOUT });
-
-    history.push("/");
-
+    history.push('/');
     setUser(null);
-  };
+  }, [dispatch, history]);
 
   // we need to refresh page for getting user in navbar rendered. To avoid that following useEffect is useful.
   useEffect(() => {
@@ -39,8 +37,8 @@ const Navbar = (props: Props) => {
       if (decodedToken.exp * 1000 < new Date().getTime()) logout();
     }
 
-    setUser(JSON.parse(localStorage.getItem("profile") || "{}"));
-  }, [location, user?.token]);
+    setUser(JSON.parse(localStorage.getItem('profile') || '{}'));
+  }, [location, logout, user?.token]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">

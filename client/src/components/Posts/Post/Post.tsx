@@ -6,21 +6,20 @@ import {
   CardContent,
   CardMedia,
   Typography,
-} from "@material-ui/core";
-import MoreHorizRoundedIcon from "@material-ui/icons/MoreHorizRounded";
-import DeleteRoundedIcon from "@material-ui/icons/DeleteRounded";
-import ThumbUpAltRoundedIcon from "@material-ui/icons/ThumbUpAltRounded";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { deletePost, likePost } from "../../../actions/postsActions";
+} from '@material-ui/core';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import ThumbUpAltRoundedIcon from '@material-ui/icons/ThumbUpAltRounded';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { deletePost, likePost } from '../../../actions/postsActions';
 
-import useStyles from "./styles";
+import useStyles from './styles';
 
 // import defaultImage from "../../../images/sunset.svg";
-import moment from "moment";
-import { ThumbUpAltOutlined } from "@material-ui/icons";
-import PopupMenu from "../PopupMenu/PopupMenu";
-import { useHistory } from "react-router-dom";
+import moment from 'moment';
+import { ThumbUpAltOutlined } from '@material-ui/icons';
+import PopupMenu from '../PopupMenu/PopupMenu';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   post: any;
@@ -31,7 +30,7 @@ interface Props {
 const Post = ({ post, setCurrentId, setCurrentFileId }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("profile") || "{}");
+  const user = JSON.parse(localStorage.getItem('profile') || '{}');
   const history = useHistory();
 
   const Likes = () => {
@@ -44,12 +43,12 @@ const Post = ({ post, setCurrentId, setCurrentFileId }: Props) => {
           &nbsp;
           {post.likes.length > 2
             ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+            : `${post.likes.length} like${post.likes.length > 1 ? 's' : ''}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}
         </>
       );
     }
@@ -74,7 +73,7 @@ const Post = ({ post, setCurrentId, setCurrentFileId }: Props) => {
           // image={post.selectedFile}
           image={
             post.selectedFile ||
-            "https://ik.imagekit.io/geyomtt532/memories/Nature__zUO2ICWKd.jpg"
+            'https://ik.imagekit.io/geyomtt532/memories/Nature__zUO2ICWKd.jpg'
           }
           title={post.title}
         />
