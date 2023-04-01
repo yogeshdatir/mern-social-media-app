@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://social-mern.up.railway.app/',
+  baseURL: 'https://mern-social-media-app-ten.vercel.app',
   // baseURL: "http://localhost:5000",
 });
 
